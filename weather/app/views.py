@@ -4,7 +4,9 @@ import datetime
 import math
 
 def index(request):
-    city_name = 'Kochi'
+    city_name= 'kochi'
+    if request.method == 'POST':
+        city_name=request.POST['city']
     url = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid=360e4bc3865e745ec844bd7ec054ca11'
     data = requests.get(url)
     weather_data = data.json()
@@ -20,6 +22,8 @@ def index(request):
         'temp_max_celsius': math.floor(weather_data['main']['temp_max'] - 273.15),  # Convert to Celsius
         'sunrise': dt_object.strftime('%H:%M:%S'),
         'sunset': dt_object1.strftime('%H:%M:%S'),
+        'date' : dt_object1.strftime("%d %B"),
+        'day' : dt_object.strftime('%A'),
         'visibility': math.floor(weather_data['visibility'] / 1000),
         'cloud': weather_data['clouds']['all'],
         'wind': weather_data['wind']['speed'],

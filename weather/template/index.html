@@ -32,8 +32,8 @@
 					<a href="index.html" class="branding">
 						<img src="{% static 'images/logo.png' %}" alt="" class="logo">
 						<div class="logo-type">
-							<h1 class="site-title">Company name</h1>
-							<small class="site-description">tagline goes here</small>
+							<h1 class="site-title">Weather</h1>
+							<small class="site-description">find your city's current weather</small>
 						</div>
 					</a>
 
@@ -41,7 +41,7 @@
 					<div class="main-navigation">
 						<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
 						<ul class="menu">
-							<li class="menu-item current-menu-item"><a href="index.html">Home</a></li>
+							<li class="menu-item current-menu-item"><a href="../">Home</a></li>
 							<li class="menu-item"><a href="#">News</a></li>
 							<li class="menu-item"><a href="#">Live cameras</a></li>
 							<li class="menu-item"><a href="#">Photos</a></li>
@@ -56,8 +56,9 @@
 
 			<div class="hero" data-bg-image="images/banner.png">
 				<div class="container">
-					<form action="#" class="find-location">
-						<input type="text" placeholder="Find your location...">
+					<form action="../" class="find-location" method="post">
+						{% csrf_token %}
+						<input type="text" placeholder="Find your location..." name="city"  id="section1">
 						<input type="submit" value="Find">
 					</form>
 
@@ -68,92 +69,20 @@
 					<div class="forecast-container">
 						<div class="today forecast">
 							<div class="forecast-header">
-								<div class="day">Monday</div>
-								<div class="date">6 Oct</div>
+								<div class="day">{{data.day}}</div>
+								<div class="date">{{data.date}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
-								<div class="location">New York</div>
+								<div class="location">{{data.city}}</div>
 								<div class="degree">
-									<div class="num">23<sup>o</sup>C</div>
+									<div class="num">{{data.temperature_celsius}}<sup>o</sup>C</div>
 									<div class="forecast-icon">
 										<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=90>
 									</div>	
 								</div>
-								<span><img src="{% static 'images/icon-umberella.png' %}" alt="">20%</span>
-								<span><img src="{% static 'images/icon-wind.png' %}" alt="">18km/h</span>
+								<span><img src="{% static 'images/icon-umberella.png' %}" alt="">N/A</span>
+								<span><img src="{% static 'images/icon-wind.png' %}" alt="">{{data.wind}} m/s</span>
 								<span><img src="{% static 'images/icon-compass.png' %}" alt="">East</span>
-							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day">Tuesday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-3.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree">23<sup>o</sup>C</div>
-								<small>18<sup>o</sup></small>
-							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day">Wednesday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-5.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree">23<sup>o</sup>C</div>
-								<small>18<sup>o</sup></small>
-							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day">Thursday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-7.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree">23<sup>o</sup>C</div>
-								<small>18<sup>o</sup></small>
-							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day">Friday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-12.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree">23<sup>o</sup>C</div>
-								<small>18<sup>o</sup></small>
-							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day">Saturday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-13.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree">23<sup>o</sup>C</div>
-								<small>18<sup>o</sup></small>
-							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day">Sunday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-14.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree">23<sup>o</sup>C</div>
-								<small>18<sup>o</sup></small>
 							</div>
 						</div>
 					</div>
@@ -162,34 +91,35 @@
 			<main class="main-content">
 				<div class="fullwidth-block">
 					<div class="container">
-						<h2 class="section-title">Live cameras</h2>
+						<h2 class="section-title">Popular Cities</h2>
 						<div class="row">
 							<div class="col-md-3 col-sm-6">
 								<div class="live-camera">
 									<figure class="live-camera-cover"><img src="{% static 'images/live-camera-1.jpg' %}" alt=""></figure>
 									<h3 class="location">New York</h3>
-									<small class="date">8 oct, 8:00AM</small>
+									<!-- <small class="date">8 oct, 8:00AM</small> -->
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
 								<div class="live-camera">
 									<figure class="live-camera-cover"><img src="{% static 'images/live-camera-2.jpg' %}" alt=""></figure>
 									<h3 class="location">Los Angeles</h3>
-									<small class="date">8 oct, 8:00AM</small>
+									<!-- <small class="date">8 oct, 8:00AM</small> -->
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
 								<div class="live-camera">
 									<figure class="live-camera-cover"><img src="{% static 'images/live-camera-3.jpg' %}" alt=""></figure>
 									<h3 class="location">Chicago</h3>
-									<small class="date">8 oct, 8:00AM</small>
+									<!-- <small class="date">8 oct, 8:00AM</small> -->
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
 								<div class="live-camera">
-									<figure class="live-camera-cover"><img src="{% static 'images/live-camera-4.jpg' %}" alt=""></figure>
+									<a href="#section1"><figure class="live-camera-cover"><img src="{% static 'images/live-camera-4.jpg' %}" alt=""></figure>
+									</a>
 									<h3 class="location">London</h3>
-									<small class="date">8 oct, 8:00AM</small>
+									<!-- <small class="date">8 oct, 8:00AM</small> -->
 								</div>
 							</div>
 						</div>
